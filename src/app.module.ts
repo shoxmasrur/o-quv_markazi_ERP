@@ -9,10 +9,11 @@ import { GroupModule } from './group/group.module';
 import { GroupStudentModule } from './groupStudent/groupStudent.module';
 import { LessonModule } from './lesson/lesson.module';
 import { AttendanceModule } from './attendance/attendance.module';
+import { GradeModule } from './grade/grade.module';
 
 @Module({
   imports: [PrismaModule, UserModule, RoleModule, StudentModule, GroupModule,
-    GroupStudentModule, LessonModule, AttendanceModule
+    GroupStudentModule, LessonModule, AttendanceModule, GradeModule
   ],
   controllers: [AppController],
   providers: [AppService],

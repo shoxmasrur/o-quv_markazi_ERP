@@ -10,7 +10,18 @@ export class AttendanceController {
     constructor(
         private readonly attendanceService:AttendanceService
     ){}
+
+    @Post(':lessonId')
+    markBulk(@Param('lessonId', ParseIntPipe) lessonId:number, @Body() dto:BulkAttendanceDto){
+        return this.attendanceService.markBulk(lessonId, dto.attendance)
+    }
+
+
+
+    
 }
+
+
 
 
  

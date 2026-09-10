@@ -1,9 +1,11 @@
+import { IsArray } from "class-validator";
 import { AttendanceItemDto } from "./attendanceItemDto";
 
 
 export class BulkAttendanceDto {
-    constructor(
-       private readonly attendance: AttendanceItemDto[]
 
-    ){}
+    @IsArray()
+    attendance!: AttendanceItemDto[]
+
+    
 }

@@ -80,6 +80,7 @@ model Student {
 
   groups      GroupStudent[]
   attendances Attendance[]
+  grades      Grade[]
 
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
@@ -134,6 +135,7 @@ model Lesson {
   topic String?
 
   attendances Attendance[]
+  grades      Grade[]
 
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
@@ -146,6 +148,22 @@ model Attendance {
 
   status AttendanceStatus @default(UNMARKED)
   note   String?
+
+  lesson  Lesson  @relation(fields: [lessonId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@unique([lessonId, studentId])
+}
+
+model Grade {
+  id        Int     @id @default(autoincrement())
+  lessonId  Int
+  studentId Int
+  score     Int
+  comment   String?
 
   lesson  Lesson  @relation(fields: [lessonId], references: [id])
   student Student @relation(fields: [studentId], references: [id])

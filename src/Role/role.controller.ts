@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from "@nestjs/common";
+import { Body, Controller, Get, Logger, Post } from "@nestjs/common";
 import { RoleService } from "./role.service";
 import { CreateRoleDto } from "./dto/crete-Role.dto";
 
@@ -15,5 +15,10 @@ export class RoleController {
     create(@Body() dto:CreateRoleDto){
         console.log("salom")
         return this.roleService.cretae(dto)
+    }
+
+    @Get()
+    findAll(){
+        return this.roleService.findAll()
     }
 }

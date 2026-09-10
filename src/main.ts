@@ -8,12 +8,15 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const PORT = Number(process.env.PORT)
 
-  // const config = new DocumentBuilder()
-  //       .setTitle("Oquv-Markazi_ERP")
-  //       .setVersion('1.0')
-  //       .build()
-  // const document = SwaggerModule.createDocument(app, config);
-  // SwaggerModule.setup('api/v1/docs', app, document)
+  const config = new DocumentBuilder()
+        .setTitle("Oquv-Markazi_ERP")
+        .setVersion('1.0')
+        .addServer("/api/v1")
+        .build()
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/v1/docs', app, document, { 
+    swaggerOptions: {persistAuthorization:true}
+  })
 
   
   app.useGlobalPipes( new ValidationPipe({

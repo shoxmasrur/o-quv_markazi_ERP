@@ -1,8 +1,9 @@
-import { PrismaClient } from "generated/prisma/client";
+import { PrismaService } from "src/prisma/prisma.service";
 
 
 
-const prisma = new PrismaClient();
+
+const prisma = new PrismaService()
 
 async function main(){
     const roles = [

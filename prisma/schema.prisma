@@ -13,6 +13,13 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AttendanceStatus {
+  UNMARKED
+  PRESENT
+  ABSENT
+  LATE
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   name         String
@@ -44,6 +51,8 @@ model Teacher {
   id     Int @id @default(autoincrement())
   userId Int @unique
 
+  groups Group[]
+
   user User @relation(fields: [userId], references: [id])
 
   createAt DateTime @default(now())
@@ -69,6 +78,80 @@ model Student {
   parentId Int?
   parent   Parent? @relation(fields: [parentId], references: [id])
 
+  groups      GroupStudent[]
+  attendances Attendance[]
+
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+}
+
+model Group {
+  id        Int       @id @default(autoincrement())
+  name      String
+  startDate DateTime?
+  endDate   DateTime?
+  status    String?   @default("ACTIVE")
+  schedule  Json?
+  subject   String?
+
+  lessons Lesson[]
+
+  teacherId Int
+  teacher   Teacher @relation(fields: [teacherId], references: [id])
+
+  students GroupStudent[]
+
+  craeteAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model GroupStudent {
+  id        Int @id @default(autoincrement())
+  groupId   Int
+  studentId Int
+
+  joinedAt DateTime  @default(now())
+  leftAt   DateTime?
+
+  group   Group   @relation(fields: [groupId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@unique([groupId, studentId])
+}
+
+model Lesson {
+  id      Int   @id @default(autoincrement())
+  groupId Int
+  group   Group @relation(fields: [groupId], references: [id])
+
+  date      DateTime
+  startTime DateTime
+  endTime   DateTime
+
+  topic String?
+
+  attendances Attendance[]
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
+
+model Attendance {
+  id        Int @id @default(autoincrement())
+  lessonId  Int
+  studentId Int
+
+  status AttendanceStatus @default(UNMARKED)
+  note   String?
+
+  lesson  Lesson  @relation(fields: [lessonId], references: [id])
+  student Student @relation(fields: [studentId], references: [id])
+
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+
+  @@unique([lessonId, studentId])
 }
